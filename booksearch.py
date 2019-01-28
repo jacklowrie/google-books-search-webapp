@@ -41,9 +41,10 @@ class BookSearch:
 
     #returns the isbn number of a result, if available
     def get_result_isbn(self, result):
-        for id in self.results['items'][result]['volumeInfo']['industryIdentifiers']:
-            if id['type'] == 'ISBN_13':
-                return id['identifier']
+        if 'industryIdentifiers'] in self.results['items'][result]['volumeInfo']:
+            for id in self.results['items'][result]['volumeInfo']['industryIdentifiers']:
+                if id['type'] == 'ISBN_13':
+                    return id['identifier']
         return 0
 
     # use the goodreads api to get the goodreads id for a given isbn
