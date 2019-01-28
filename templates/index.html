@@ -3,19 +3,40 @@
 {% block content %}
 
 <form method="POST" action="/" class="pure-form">
-            {{ form.hidden_tag() }}
+  {{ form.hidden_tag() }}
 
-            <div class="form-group">
-              {% if form.search_query.errors %}
-                {% for error in form.search_query.errors %}
-                  <p class="error-message">{{ error }}</p>
-                {% endfor %}
-              {% endif %}
+  <div class="form-group">
+    {% if form.search_query.errors %}
+      {% for error in form.search_query.errors %}
+        <p class="error-message">{{ error }}</p>
+      {% endfor %}
+    {% endif %}
 
-              {{ form.search_query(placeholder="Search") }}
-            </div>
+    {{ form.search_query(placeholder="Search") }}
+  </div>
 
-            {{ form.submit(class="btn-primary pure-button pure-button-primary") }}
-          </form>
+  {{ form.submit(class="btn-primary pure-button pure-button-primary") }}
+</form>
+
+
+<div class="results">
+  {% for result in results %}
+    <article class='pure-g'>
+      <div class="pure-u-1-4">
+        {% if result['thumbnail'] =='' %}
+        <p class = thumbnail>this result has no thumbnail</p>
+        {% else %}
+        <img src="{{ result['thumbnail'] }}" style="margin:auto">
+        {% endif %}
+      </div>
+      <div class="pure-u-3-4">
+        <p class="title" target="_blank">{{ result['title'] }}</p>
+        <p class="authors">{{ result['authors'] }}</p>
+        <p class="publisher">{{ result['publisher'] }}</p>
+      </div>
+    </article>
+  {% endfor %}
+</div>
+
 
 {% endblock %}

@@ -1,5 +1,3 @@
-
-
 import requests
 
 
@@ -21,6 +19,22 @@ class BookSearch:
         self.send_request()
         self.parse_results()
 
+
+
+    def get_search_results(self):
+        search_results = []
+        num_results = len(self.results['items'])
+
+        for result in range(num_results):
+            d = {
+                'title': self.get_result_title(result),
+                'authors': self.get_result_authors(result),
+                'publisher': self.get_result_publisher(result),
+                'thumbnail': self.get_thumbnail_url(result)
+            }
+            search_results.append(d)
+        return search_results
+
     # adds user's search phrase to parameters
     def construct_request(self):
         self.parameters['q'] = self.search
@@ -32,6 +46,7 @@ class BookSearch:
     #store the results in a python dictionary
     def parse_results(self):
         self.results = self.search.json()
+
 
 
 
@@ -66,8 +81,10 @@ class BookSearch:
         return 'publisher: ' + publisher
 
     def get_thumbnail_url(self, result):
-        return self.results['items'][result]['volumeInfo']['imageLinks']['thumbnail']
-
+        thumbnail = ''
+        if 'imageLinks' in self.results['items'][result]['volumeInfo']:
+            thumbnail = self.results['items'][result]['volumeInfo']['imageLinks']['thumbnail']
+        return thumbnail
     # returns the status code as an int
     def get_status_code(self):
         return self.search.status_code
@@ -80,14 +97,6 @@ class BookSearch:
         print(self.search.url)
 
 
-
-    def dump_search_results(self):
-        print("HTTP Status Code: " +str(self.get_status_code()))
-        print("total results: " + str(self.get_results_count())+'\n')
-        print(self.get_result_title())
-        print('\t' + self.get_result_authors())
-
-
 # test queries
 many_results = 'harry potter sorcerer\'s stone' #test search many results
 quarter_boys = 'intitle:reckoning+inauthor:david+inauthor:lennon' #test search one result
@@ -96,5 +105,5 @@ multiple_authors = 'introduction to algorithms inauthor:Thomas inauthor:H inauth
 
 
 #try it out
-test = BookSearch(many_results)
-test.print_search_results()
+#test = BookSearch('quarter boys')
+#print(test.results)
