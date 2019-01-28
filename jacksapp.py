@@ -1,17 +1,18 @@
 
 
-import requests #this thing is awesome
+import requests
 
 
 class BookSearch:
 
     books_api = 'https://www.googleapis.com/books/v1/volumes'
     parameters = {'q' : '', 'projection' : 'lite'}
-    search = ''
-    results = ''
+    search = '' #user's search query
+    results = '' #response from google books, in json format
 
     def __init__(self, search):
         self.search = search
+        self.make_a_search()
 
 
 
@@ -20,6 +21,7 @@ class BookSearch:
         self.send_request()
         self.parse_results()
 
+    # adds user's search phrase to parameters
     def construct_request(self):
         self.parameters['q'] = self.search
 
@@ -95,5 +97,4 @@ multiple_authors = 'introduction to algorithms inauthor:Thomas inauthor:H inauth
 
 #try it out
 test = BookSearch(many_results)
-test.make_a_search()
 test.print_search_results()
