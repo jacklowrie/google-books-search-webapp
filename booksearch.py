@@ -4,9 +4,12 @@ import requests
 class BookSearch:
 
     books_api = 'https://www.googleapis.com/books/v1/volumes'
-    parameters = {'q' : '', 'fields' : 'kind,items(kind,volumeInfo(title,subtitle,authors,publisher,industryIdentifiers,imageLinks/thumbnail))'}
+    parameters = {  'q' : '',
+                    'fields' : 'kind,items(kind,volumeInfo(title,subtitle,authors,publisher,industryIdentifiers,imageLinks/thumbnail))'
+                }
     search = '' #user's search query
     results = '' #response from google books, in json format
+
 
     def __init__(self, search):
         self.search = search
@@ -30,14 +33,28 @@ class BookSearch:
                 'title': self.get_result_title(result),
                 'authors': self.get_result_authors(result),
                 'publisher': self.get_result_publisher(result),
-                'thumbnail': self.get_thumbnail_url(result)
+                'thumbnail': self.get_thumbnail_url(result),
+                'goodreads': self.get_goodreads_id(result)
             }
             search_results.append(d)
         return search_results
 
+    #returns the isbn number of a result, if available
     def get_result_isbn(self, result):
-        return result
+        for id in self.results['items'][result]['volumeInfo']['industryIdentifiers']:
+            if id['type'] == 'ISBN_10' or id['type'] == 'ISBN_13':
+                return id['identifier']
+        return 0
 
+    # use the goodreads api to get the goodreads id for a given isbn
+    def get_goodreads_id(self, result):
+        goodreads_id = 0
+        isbn = self.get_result_isbn(result)
+        if isbn:
+            goodreads_api = 'https://www.goodreads.com/book/isbn_to_id'
+            params = {'key' : 'Hc3p3luBbcApaSFOTIgadQ', 'isbn' : isbn}
+            goodreads_id = requests.get(goodreads_api, params=params)
+        return goodreads_id.text
     # adds user's search phrase to parameters
     def construct_request(self):
         self.parameters['q'] = self.search
@@ -59,6 +76,8 @@ class BookSearch:
             print('\n' + self.get_result_title(result) )
             print( '\t' + self.get_result_authors(result))
             print( '\t' + self.get_result_publisher(result))
+            print( '\t isbn: ' + self.get_result_isbn(result))
+            print('\t goodreads id: ' + self.get_goodreads_id(result))
             print( '\tthumbnail: ' + self.get_thumbnail_url(result) + '\n')
 
     def get_result_title(self, result):
@@ -109,4 +128,4 @@ multiple_authors = 'introduction to algorithms inauthor:Thomas inauthor:H inauth
 
 #try it out
 test = BookSearch(quarter_boys)
-print(test.results)
+test.print_search_results()
