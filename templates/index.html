@@ -1,0 +1,21 @@
+{% extends "outline.html" %}
+
+{% block content %}
+
+<form method="POST" action="/" class="pure-form">
+            {{ form.hidden_tag() }}
+
+            <div class="form-group">
+              {% if form.search_query.errors %}
+                {% for error in form.search_query.errors %}
+                  <p class="error-message">{{ error }}</p>
+                {% endfor %}
+              {% endif %}
+
+              {{ form.search_query(placeholder="Search") }}
+            </div>
+
+            {{ form.submit(class="btn-primary pure-button pure-button-primary") }}
+          </form>
+
+{% endblock %}
