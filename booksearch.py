@@ -41,9 +41,10 @@ class BookSearch:
 
     #returns the isbn number of a result, if available
     def get_result_isbn(self, result):
-        for id in self.results['items'][result]['volumeInfo']['industryIdentifiers']:
-            if id['type'] == 'ISBN_13':
-                return id['identifier']
+        if 'industryIdentifiers'] in self.results['items'][result]['volumeInfo']:
+            for id in self.results['items'][result]['volumeInfo']['industryIdentifiers']:
+                if id['type'] == 'ISBN_13':
+                    return id['identifier']
         return 0
 
     # use the goodreads api to get the goodreads id for a given isbn
@@ -129,10 +130,10 @@ class BookSearch:
 
 
 # test queries
-many_results = 'harry potter sorcerer\'s stone' #test search many results
-quarter_boys = 'intitle:reckoning+inauthor:david+inauthor:lennon' #test search one result
-no_results = '3ugn398' #test search returns no results
-multiple_authors = 'introduction to algorithms inauthor:Thomas inauthor:H inauthor:Cormen inauthor:Thomas inauthor:H inauthor:Cormen inauthor:Charles inauthor:E inauthor:Leiserson'
+# many_results = 'harry potter sorcerer\'s stone' #test search many results
+# quarter_boys = 'intitle:reckoning+inauthor:david+inauthor:lennon' #test search one result
+# no_results = '3ugn398' #test search returns no results
+# multiple_authors = 'introduction to algorithms inauthor:Thomas inauthor:H inauthor:Cormen inauthor:Thomas inauthor:H inauthor:Cormen inauthor:Charles inauthor:E inauthor:Leiserson'
 
 
 #try it out
