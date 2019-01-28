@@ -4,7 +4,7 @@ import requests
 class BookSearch:
 
     books_api = 'https://www.googleapis.com/books/v1/volumes'
-    parameters = {'q' : '', 'projection' : 'lite'}
+    parameters = {'q' : '', 'fields' : 'kind,items(kind,volumeInfo(title,subtitle,authors,publisher,industryIdentifiers,imageLinks/thumbnail))'}
     search = '' #user's search query
     results = '' #response from google books, in json format
 
@@ -34,6 +34,9 @@ class BookSearch:
             }
             search_results.append(d)
         return search_results
+
+    def get_result_isbn(self, result):
+        return result
 
     # adds user's search phrase to parameters
     def construct_request(self):
@@ -105,5 +108,5 @@ multiple_authors = 'introduction to algorithms inauthor:Thomas inauthor:H inauth
 
 
 #try it out
-#test = BookSearch('quarter boys')
-#print(test.results)
+test = BookSearch(quarter_boys)
+print(test.results)
