@@ -41,7 +41,7 @@ class BookSearch:
 
     #returns the isbn number of a result, if available
     def get_result_isbn(self, result):
-        if 'industryIdentifiers'] in self.results['items'][result]['volumeInfo']:
+        if 'industryIdentifiers' in self.results['items'][result]['volumeInfo']:
             for id in self.results['items'][result]['volumeInfo']['industryIdentifiers']:
                 if id['type'] == 'ISBN_13':
                     return id['identifier']
