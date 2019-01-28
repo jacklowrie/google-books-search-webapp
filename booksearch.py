@@ -34,7 +34,7 @@ class BookSearch:
                 'authors': self.get_result_authors(result),
                 'publisher': self.get_result_publisher(result),
                 'thumbnail': self.get_thumbnail_url(result),
-                'goodreads': self.get_goodreads_id(result)
+                'goodreads': self.make_goodreads_url(result)
             }
             search_results.append(d)
         return search_results
@@ -42,7 +42,7 @@ class BookSearch:
     #returns the isbn number of a result, if available
     def get_result_isbn(self, result):
         for id in self.results['items'][result]['volumeInfo']['industryIdentifiers']:
-            if id['type'] == 'ISBN_10' or id['type'] == 'ISBN_13':
+            if id['type'] == 'ISBN_13':
                 return id['identifier']
         return 0
 
@@ -55,6 +55,13 @@ class BookSearch:
             params = {'key' : 'Hc3p3luBbcApaSFOTIgadQ', 'isbn' : isbn}
             goodreads_id = requests.get(goodreads_api, params=params)
         return goodreads_id.text
+
+    # construct link to result on goodreads
+    def make_goodreads_url(self, result):
+        goodreads = 'https://www.goodreads.com/book/show/'
+        id = str(self.get_goodreads_id(result))
+        return goodreads + id
+
     # adds user's search phrase to parameters
     def construct_request(self):
         self.parameters['q'] = self.search
@@ -78,6 +85,7 @@ class BookSearch:
             print( '\t' + self.get_result_publisher(result))
             print( '\t isbn: ' + self.get_result_isbn(result))
             print('\t goodreads id: ' + self.get_goodreads_id(result))
+            print('\t goodreads link: ' + self.make_goodreads_url(result))
             print( '\tthumbnail: ' + self.get_thumbnail_url(result) + '\n')
 
     def get_result_title(self, result):
@@ -127,5 +135,5 @@ multiple_authors = 'introduction to algorithms inauthor:Thomas inauthor:H inauth
 
 
 #try it out
-test = BookSearch(quarter_boys)
-test.print_search_results()
+#test = BookSearch(quarter_boys)
+#test.print_search_results()
