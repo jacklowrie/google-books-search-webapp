@@ -20,23 +20,30 @@
 
 
 <div class="results">
-  {% for result in results %}
-    <article class='pure-g'>
-      <div class="pure-u-1-4">
-        {% if result['thumbnail'] =='' %}
-        <p class = thumbnail>this result has no thumbnail</p>
-        {% else %}
-        <img src="{{ result['thumbnail'] }}" style="margin:auto">
-        {% endif %}
-      </div>
-      <div class="pure-u-3-4">
-        <p class="title" target="_blank">{{ result['title'] }}</p>
-        <p class="authors">{{ result['authors'] }}</p>
-        <p class="publisher">{{ result['publisher'] }}</p>
-        <a href="{{ result['goodreads'] }}">View on GoodReads</a>
-      </div>
-    </article>
-  {% endfor %}
+  {% if results == 'no results' %}
+  <div class="pure-u-1-4"></div>
+  <div class="pure-u-3-4">
+    <p class="no-results">Oops! your search didn't turn up any results!</p>
+  </div>
+  {% else %}
+    {% for result in results %}
+      <article class='pure-g'>
+        <div class="pure-u-1-4">
+          {% if result['thumbnail'] =='' %}
+          <p class = thumbnail>this result has no thumbnail</p>
+          {% else %}
+          <img src="{{ result['thumbnail'] }}" style="margin:auto">
+          {% endif %}
+        </div>
+        <div class="pure-u-3-4">
+          <p class="title" target="_blank">{{ result['title'] }}</p>
+          <p class="authors">{{ result['authors'] }}</p>
+          <p class="publisher">{{ result['publisher'] }}</p>
+          <a href="{{ result['goodreads'] }}">View on GoodReads</a>
+        </div>
+      </article>
+    {% endfor %}
+    {% endif %}
 </div>
 
 

@@ -26,9 +26,12 @@ class BookSearch:
 
     def get_search_results(self):
         search_results = []
-        num_results = len(self.results['items'])
 
+        if 0 == 0: # if there are no search results
+            return 'no results'
+        num_results = len(self.results['items'])
         for result in range(num_results):
+            # add each result as a dictionary to search_results
             d = {
                 'title': self.get_result_title(result),
                 'authors': self.get_result_authors(result),
@@ -37,6 +40,7 @@ class BookSearch:
                 'goodreads': self.make_goodreads_url(result)
             }
             search_results.append(d)
+
         return search_results
 
     #returns the isbn number of a result, if available
