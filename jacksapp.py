@@ -38,7 +38,8 @@ class BookSearch:
         for result in range(num_results):
             print('\n' + self.get_result_title(result) )
             print( '\t' + self.get_result_authors(result))
-            print( '\t' + self.get_result_publisher(result) + '\n')
+            print( '\t' + self.get_result_publisher(result))
+            print( '\tthumbnail: ' + self.get_thumbnail_url(result) + '\n')
 
     def get_result_title(self, result):
         title = self.results['items'][result]['volumeInfo']['title']
@@ -62,7 +63,8 @@ class BookSearch:
 
         return 'publisher: ' + publisher
 
-
+    def get_thumbnail_url(self, result):
+        return self.results['items'][result]['volumeInfo']['imageLinks']['thumbnail']
 
     # returns the status code as an int
     def get_status_code(self):

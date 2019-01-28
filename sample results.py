@@ -3,7 +3,7 @@
 'items': [{'kind': 'books#volume',
           'id': 'Osn8ugAACAAJ',
           'etag': 'WlgrcGTMHoU',
-          'selfLink': 'https://www.googleapis.com/books/v1/volumes/Osn8ugAACAAJ', 
+          'selfLink': 'https://www.googleapis.com/books/v1/volumes/Osn8ugAACAAJ',
           'volumeInfo': {'title': 'Reckoning',
                         'subtitle': 'The Quarter Boys',
                         'authors': ['David Lennon'],
@@ -15,15 +15,15 @@
                         'maturityRating': 'NOT_MATURE',
                         'allowAnonLogging': False,
                         'contentVersion': 'preview-1.0.0',
-                        'imageLinks': {'smallThumbnail': 'http://books.google.com/books/content?id=Osn8ugAACAAJ&printsec=frontcover&img=1&zoom=5&source=gbs_api',
-                        'thumbnail': 'http://books.google.com/books/content?id=Osn8ugAACAAJ&printsec=frontcover&img=1&zoom=1&source=gbs_api'}, 'previewLink': 'http://books.google.com/books?id=Osn8ugAACAAJ&dq=intitle:reckoning%2Binauthor:david%2Binauthor:lennon&hl=&cd=1&source=gbs_api',
+                        'imageLinks': {'smallThumbnail': 'http://books.google.com/books/content?id=Osn8ugAACAAJ&printsec=frontcover&img=1&zoom=5&source=gbs_api', 'thumbnail': 'http://books.google.com/books/content?id=Osn8ugAACAAJ&printsec=frontcover&img=1&zoom=1&source=gbs_api'},
+                        'previewLink': 'http://books.google.com/books?id=Osn8ugAACAAJ&dq=intitle:reckoning%2Binauthor:david%2Binauthor:lennon&hl=&cd=1&source=gbs_api',
                         'infoLink': 'http://books.google.com/books?id=Osn8ugAACAAJ&dq=intitle:reckoning%2Binauthor:david%2Binauthor:lennon&hl=&source=gbs_api',
                         'canonicalVolumeLink': 'https://books.google.com/books/about/Reckoning.html?hl=&id=Osn8ugAACAAJ'},
-                        'saleInfo': {'country': 'US'},
-                        'accessInfo': {'country': 'US',
-                        'epub': {'isAvailable': False},
-                        'pdf': {'isAvailable': False},
-                        'accessViewStatus': 'NONE'},
-                        'searchInfo': {'textSnippet': 'As old friends and enemies suddenly reappear, it becomes all too clear that the past isn&#39;t quite done with them yet. Reckoning is the fifth novel featuring detectives Michel Doucette and Sassy Jones.'}
+            'saleInfo': {'country': 'US'},
+            'accessInfo': {'country': 'US',
+            'epub': {'isAvailable': False},
+            'pdf': {'isAvailable': False},
+            'accessViewStatus': 'NONE'},
+            'searchInfo': {'textSnippet': 'As old friends and enemies suddenly reappear, it becomes all too clear that the past isn&#39;t quite done with them yet. Reckoning is the fifth novel featuring detectives Michel Doucette and Sassy Jones.'}
             }]
 }
