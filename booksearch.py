@@ -53,8 +53,9 @@ class BookSearch:
         if isbn:
             goodreads_api = 'https://www.goodreads.com/book/isbn_to_id'
             params = {'key' : 'Hc3p3luBbcApaSFOTIgadQ', 'isbn' : isbn}
-            goodreads_id = requests.get(goodreads_api, params=params)
-        return goodreads_id.text
+            goodreads_response = requests.get(goodreads_api, params=params)
+            goodreads_id = goodreads_response.text
+        return goodreads_id
 
     # construct link to result on goodreads
     def make_goodreads_url(self, result):
