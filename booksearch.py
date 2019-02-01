@@ -5,7 +5,7 @@ class BookSearch:
 
     books_api = 'https://www.googleapis.com/books/v1/volumes'
     parameters = {  'q' : '',
-                    'fields' : 'kind,items(kind,volumeInfo(title,subtitle,authors,publisher,industryIdentifiers,imageLinks/thumbnail))'
+                    'fields' : 'kind,totalItems,items(kind,volumeInfo(title,subtitle,authors,publisher,industryIdentifiers,imageLinks/thumbnail))'
                 }
     search = '' #user's search query
     results = '' #response from google books, in json format
@@ -27,7 +27,7 @@ class BookSearch:
     def get_search_results(self):
         search_results = []
 
-        if 0 == 0: # if there are no search results
+        if self.results['totalItems'] == 0: # if there are no search results
             return 'no results'
         num_results = len(self.results['items'])
         for result in range(num_results):
@@ -135,11 +135,15 @@ class BookSearch:
 
 # test queries
 # many_results = 'harry potter sorcerer\'s stone' #test search many results
-# quarter_boys = 'intitle:reckoning+inauthor:david+inauthor:lennon' #test search one result
-# no_results = '3ugn398' #test search returns no results
+#quarter_boys = 'intitle:reckoning+inauthor:david+inauthor:lennon' #test search one result
+#no_results = '3ugn398' #test search returns no results
 # multiple_authors = 'introduction to algorithms inauthor:Thomas inauthor:H inauthor:Cormen inauthor:Thomas inauthor:H inauthor:Cormen inauthor:Charles inauthor:E inauthor:Leiserson'
 
 
 #try it out
-#test = BookSearch(quarter_boys)
+#test = BookSearch(no_results)
 #test.print_search_results()
+#print('\n\n')
+#print(test.results)
+#print('\n\n')
+#print(test.get_search_results())
