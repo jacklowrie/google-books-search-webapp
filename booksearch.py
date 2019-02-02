@@ -7,10 +7,10 @@ class BookSearch:
     parameters = {  'q' : '',
                     'fields' : 'kind,totalItems,items(kind,volumeInfo(title,subtitle,authors,publisher,industryIdentifiers,imageLinks/thumbnail))'
                 }
-    search = '' #user's search query
-    results = '' #response from google books, in json format
+    search = '' #user's search query, populated in __init__
+    results = '' #response from google books, populated by parse_results()
 
-    def __init__(self, search):
+    def __init__(self, search=''):
         self.search = search
 #        self.make_a_search()
 
@@ -125,9 +125,6 @@ class BookSearch:
     def get_results_count(self):
         return self.results.get("totalItems")
 
-    def print_search_url(self):
-        print(self.search.url)
-
 
 # test queries
 # many_results = 'harry potter sorcerer\'s stone' #test search many results
@@ -137,7 +134,8 @@ class BookSearch:
 
 
 #try it out
-#test = BookSearch(no_results)
+#test = BookSearch(quarter_boys)
+#test.print_search_url()
 #test.print_search_results()
 #print('\n\n')
 #print(test.results)
