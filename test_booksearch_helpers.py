@@ -4,6 +4,23 @@ from unittest.mock import Mock, patch
 from booksearch import BookSearch
 
 search_phrase = 'this is a test search'
+json = { 'kind': 'books#volumes',
+                    'totalItems': 1,
+                    'items': [{ 'kind': 'books#volume',
+                                'volumeInfo': { 'title': 'Reckoning',
+                                                'subtitle': 'The Quarter Boys',
+                                                'authors': ['David Lennon'],
+                                                'publisher': 'Createspace Indie Pub Platform',
+                                                'industryIdentifiers': [{   'type': 'ISBN_10',
+                                                                            'identifier': '1475009216'
+                                                                        },
+                                                                        {  'type': 'ISBN_13',
+                                                                            'identifier': '9781475009217'
+                                                                        }],
+                                                'imageLinks': {'thumbnail': 'http://books.google.com/books/content?id=Osn8ugAACAAJ&printsec=frontcover&img=1&zoom=1&source=gbs_api'}
+                                                }
+                            }]
+}
 
 @pytest.fixture()
 def new_search():
@@ -11,6 +28,13 @@ def new_search():
     yield new_search
     del new_search
 
+@pytest.fixture()
+def successful_search():
+    successful_search = BookSearch('intitle:reckoning+inauthor:david+inauthor:lennon')
+    successful_search.construct_request()
+    successful_search.results = json
+    yield successful_search
+    del successful_search
 
 # test __init__
 def test_can_make_empty_booksearch():
@@ -34,7 +58,16 @@ def test_can_send_request(mock_get, new_search):
 
     assert new_search.search != 'search phrase'
 
-def test_can_parse_results():
-    pass #maybe not necessary (testing requests' built-in json() function)
+@patch('booksearch.requests.get') # this test may not be necessary (testing requests module built-in function)
+def test_can_parse_results(mock_get, new_search):
+    mock_get.return_value.ok = True
 
-# Test get_search_results() and helpers
+    def mock_return():
+        return json
+
+    new_search.construct_request()
+    new_search.send_request()
+
+    mock_get.setattr(json, mock_return)
+    new_search.parse_results()
+    assert True
