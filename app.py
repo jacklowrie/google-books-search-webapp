@@ -21,10 +21,11 @@ def home():
             # Query google books
             search_query = form.search_query.data
             book_search = BookSearch(search_query)
+            book_search.make_a_search()
             results = book_search.get_search_results()
             return render_template("index.html", form=form, results=results)
     elif request.method == 'GET': #if returning results
         return render_template("index.html", form=form, results=results)
 
 if __name__ == '__main__':
-    app.run()
+    app.run(debug=True)
