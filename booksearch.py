@@ -135,9 +135,8 @@ quarter_boys = 'intitle:reckoning+inauthor:david+inauthor:lennon' #test search o
 
 #try it out
 test = BookSearch(quarter_boys)
-test.construct_request()
-test.send_request()
-print(test.search.json())
+test.make_a_search()
+print(test.get_thumbnail_url(0))
 #test.print_search_url()
 #test.print_search_results()
 #print('\n\n')

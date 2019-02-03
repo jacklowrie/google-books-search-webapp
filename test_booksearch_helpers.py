@@ -71,3 +71,16 @@ def test_can_parse_results(mock_get, new_search):
     mock_get.setattr(json, mock_return)
     new_search.parse_results()
     assert True
+
+# Test get_search_results() and helpers
+def test_can_get_result_title(successful_search):
+    assert successful_search.get_result_title(0) == 'title: Reckoning: The Quarter Boys'
+
+def test_can_get_result_authors(successful_search):
+    assert successful_search.get_result_authors(0) == 'authors: David Lennon'
+
+def test_can_get_result_publisher(successful_search):
+    assert successful_search.get_result_publisher(0) == 'publisher: Createspace Indie Pub Platform'
+
+def test_can_get_thumbnail_url(successful_search):
+    assert successful_search.get_thumbnail_url(0) == 'http://books.google.com/books/content?id=Osn8ugAACAAJ&printsec=frontcover&img=1&zoom=1&source=gbs_api'
