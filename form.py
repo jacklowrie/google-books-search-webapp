@@ -4,5 +4,5 @@ from wtforms.validators import DataRequired, Length
 
 
 class SearchForm(Form):
-    search_query = StringField('Search', validators=[DataRequired("Enter a search phrase.")])
+    search_query = StringField('Search', validators=[DataRequired("Enter a search phrase."), Length(max=68)])
     submit = SubmitField('search')
