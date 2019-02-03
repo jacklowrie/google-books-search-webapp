@@ -22,6 +22,12 @@ json = { 'kind': 'books#volumes',
                             }]
 }
 
+# many_results = 'harry potter sorcerer\'s stone' #test search many results
+# quarter_boys = 'intitle:reckoning+inauthor:david+inauthor:lennon' #test search one result
+# no_results = '3ugn398' #test search returns no results
+# multiple_authors = 'introduction to algorithms inauthor:Thomas inauthor:H inauthor:Cormen inauthor:Thomas inauthor:H inauthor:Cormen inauthor:Charles inauthor:E inauthor:Leiserson'
+
+
 @pytest.fixture()
 def new_search():
     new_search = BookSearch(search_phrase)
@@ -84,3 +90,30 @@ def test_can_get_result_publisher(successful_search):
 
 def test_can_get_thumbnail_url(successful_search):
     assert successful_search.get_thumbnail_url(0) == 'http://books.google.com/books/content?id=Osn8ugAACAAJ&printsec=frontcover&img=1&zoom=1&source=gbs_api'
+
+def test_can_get_result_isbn(successful_search):
+    assert successful_search.get_result_isbn(0) == '9781475009217'
+
+@patch('booksearch.requests.get')
+def test_can_get_goodreads_id(mock_get, successful_search):
+    mock_get.return_value.text = '14429101'
+    assert successful_search.get_goodreads_id(0) == '14429101'
+
+@patch('booksearch.requests.get')
+def test_can_make_goodreads_url(mock_get, successful_search):
+    mock_get.return_value.text = '14429101'
+    assert successful_search.make_goodreads_url(0) == 'https://www.goodreads.com/book/show/14429101'
+
+@patch('booksearch.requests.get')
+def test_can_get_search_results(mock_get, successful_search):
+    mock_get.return_value.text = '14429101'
+    real_result = [{'title': 'title: Reckoning: The Quarter Boys',
+                    'authors': 'authors: David Lennon',
+                    'publisher': 'publisher: Createspace Indie Pub Platform',
+                    'thumbnail': 'http://books.google.com/books/content?id=Osn8ugAACAAJ&printsec=frontcover&img=1&zoom=1&source=gbs_api',
+                    'goodreads': 'https://www.goodreads.com/book/show/14429101'
+    }]
+    assert successful_search.get_search_results() == real_result
+
+def test_can_get_results_count(successful_search):
+    assert successful_search.get_results_count() == 1

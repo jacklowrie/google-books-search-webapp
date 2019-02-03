@@ -105,41 +105,5 @@ class BookSearch:
                     return id['identifier']
         return 0
 
-
-
-    # Debugging functions
-    def print_search_results(self):
-        num_results = len(self.results['items'])
-        for result in range(num_results):
-            print('\n' + self.get_result_title(result) )
-            print( '\t' + self.get_result_authors(result))
-            print( '\t' + self.get_result_publisher(result))
-            print( '\t isbn: ' + self.get_result_isbn(result))
-            print('\t goodreads id: ' + self.get_goodreads_id(result))
-            print('\t goodreads link: ' + self.make_goodreads_url(result))
-            print( '\tthumbnail: ' + self.get_thumbnail_url(result) + '\n')
-
-    def get_status_code(self):
-        return self.search.status_code
-
     def get_results_count(self):
         return self.results.get("totalItems")
-
-
-# test queries
-# many_results = 'harry potter sorcerer\'s stone' #test search many results
-quarter_boys = 'intitle:reckoning+inauthor:david+inauthor:lennon' #test search one result
-#no_results = '3ugn398' #test search returns no results
-# multiple_authors = 'introduction to algorithms inauthor:Thomas inauthor:H inauthor:Cormen inauthor:Thomas inauthor:H inauthor:Cormen inauthor:Charles inauthor:E inauthor:Leiserson'
-
-
-#try it out
-test = BookSearch(quarter_boys)
-test.make_a_search()
-print(test.get_thumbnail_url(0))
-#test.print_search_url()
-#test.print_search_results()
-#print('\n\n')
-#print(test.results)
-#print('\n\n')
-# print(test.get_search_results())
