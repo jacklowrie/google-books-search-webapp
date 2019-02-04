@@ -10,7 +10,7 @@ This is a simple Python app that takes in a search query and then returns a list
   4. activate your virtual environment On a windows, `$ venv\Scripts\activate`, and on a mac, `$ source venv/bin/activate`. This will ensure that the next step only installs the app's dependencies in your virtual environment.
   5. Now, you can install all of the modules the app requires using the requirements.txt file. use the command `$ pip install -r requirements.txt` At this point, you should have everything installed that you need to run the app. If you plan to run the included unit tests, you'll also need to install pytest with `pip install pytest` (I don't include pytest in requirements.txt because it is not needed for the app to function as intended)
 ### Running the app
-To run the app, type  `python3 app.py` (`py app.py` on windows). You will now be able to access the app from a browser on your local host, port 5000 (type `localhost:5000` into the address bar of your browser).
+To run the app, make sure you're in your virtual environment and use the command `$ python3 app.py` (`$ py app.py` on windows). You will now be able to access the app from a browser on your local host, port 5000 (type `localhost:5000` into the address bar of your browser).
 
 
 ### Testing
