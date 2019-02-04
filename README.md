@@ -5,10 +5,10 @@ This is a simple Python app that takes in a search query and then returns a list
 ## Local Installation, running the app, testing, and debugging
 ### Installation
   1. Make sure you have python and pip installed on your machine (pip is built into python 3.4 and later),as well as the virtualenv module. you can install python from [python.org](https://www.python.org/downloads/). . Once you have python, you can install virtualenv from the terminal with `$ python3 pip install virtualenv` `$ py pip install virtualenv` on a windows. If you added python to your path during installation, you can simply type `$ pip install virtualenv`.
-  2. either create or navigate to a folder where you want to install my app in your terminal. then, create your new virtual environment with the command `$ virtualenv venv` (this command will create and populate a new folder where your environment settings are stored.)
-  3. download a copy of my app from this repository (master branch if you want the latest stable version), and save it into the root folder (not in venv).
+  2. Download a copy of my app from this repository (master branch if you want the latest stable version) and extract it.
+  3. navigate to that folder in your terminal (or command prompt) and within that folder, create your new virtual environment with the command `$ virtualenv venv` (this command will create and populate a new folder where your environment settings are stored.)
   4. activate your virtual environment On a windows, `$ venv\Scripts\activate`, and on a mac, `$ source venv/bin/activate`. This will ensure that the next step only installs the app's dependencies in your virtual environment.
-  5. Now, you can install all of the modules the app requires using the requirements.txt file. use the command `$ pip install -r requirements.txt` At this point, you should have everything installed that you need to run the app.
+  5. Now, you can install all of the modules the app requires using the requirements.txt file. use the command `$ pip install -r requirements.txt` At this point, you should have everything installed that you need to run the app. If you plan to run the included unit tests, you'll also need to install pytest with `pip install pytest` (I don't include pytest in requirements.txt because it is not needed for the app to function as intended)
 ### Running the app
 To run the app, type  `python3 app.py` (`py app.py` on windows). You will now be able to access the app from a browser on your local host, port 5000 (type `localhost:5000` into the address bar of your browser).
 
