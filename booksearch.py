@@ -25,7 +25,6 @@ class BookSearch:
     def construct_request(self):
         self.parameters['q'] = self.search
 
-    #send the GET request
     def send_request(self):
         self.search = requests.get(self.books_api, params=self.parameters)
 
@@ -39,19 +38,19 @@ class BookSearch:
     def get_search_results(self):
         search_results = []
 
-        if self.results['totalItems'] == 0: # if there are no search results
+        if self.results['totalItems'] == 0:
             return 'no results'
         num_results = len(self.results['items'])
         for result in range(num_results):
-            # add each result as a dictionary to search_results
-            d = {
+
+            formatted_result = {
                 'title': self.get_result_title(result),
                 'authors': self.get_result_authors(result),
                 'publisher': self.get_result_publisher(result),
                 'thumbnail': self.get_thumbnail_url(result),
                 'goodreads': self.make_goodreads_url(result)
             }
-            search_results.append(d)
+            search_results.append(formatted_result)
 
         return search_results
 
