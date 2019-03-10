@@ -1,34 +1,34 @@
 import pytest
-from unittest.mock import Mock, patch
+import requests
+import requests_mock
 
 from apiquery import APIQuery
 
-# test can set base base_url
-def test_can_create_apiquery_with_base_url():
-    test_url = 'https://www.example.com/'
-    new_apiquery = APIQuery(test_url, '')
-    assert new_apiquery.base_url == test_url
+@pytest.fixture()
+def basic_apiquery():
+    pytest.test_url = 'https://www.example.com/'
+    pytest.test_query = 'some query'
+    new_apiquery = APIQuery(pytest.test_url, pytest.test_query)
+    yield new_apiquery
+    del new_apiquery, pytest.test_url, pytest.test_query
 
-def test_can_create_apiquery_with_params():
-    test_url = 'https://www.example.com/'
-    test_query = 'some query'
-    new_apiquery = APIQuery(test_url, test_query)
 
-    assert new_apiquery.parameters['q'] == test_query
+class TestCreateAPIQueryObjects(object):
 
-def test_can_get_base_url():
-    test_url = 'https://www.example.com/'
-    test_query = 'some query'
-    new_apiquery = APIQuery(test_url, test_query)
+    def test_can_create_apiquery_with_base_url(self, basic_apiquery):
+        assert basic_apiquery.base_url == pytest.test_url
 
-    assert new_apiquery.get_base_url() == test_url
+    def test_can_create_apiquery_with_params(self, basic_apiquery):
+        assert basic_apiquery.parameters['q'] == pytest.test_query
 
-def test_can_get_parameters():
-    test_url = 'https://www.example.com/'
-    test_query = 'some query'
-    new_apiquery = APIQuery(test_url, test_query)
+    def test_can_get_base_url(self, basic_apiquery):
+        assert basic_apiquery.get_base_url() == pytest.test_url
 
-    assert new_apiquery.get_parameters() == {'q': test_query}
+    def test_can_get_parameters(self, basic_apiquery):
+        assert basic_apiquery.get_parameters() == {'q': pytest.test_query}
 
-def test_can_send_request():
-    assert False
+    def test_can_construct_query_uri(self, requests_mock, basic_apiquery):
+        requests_mock.get('https://www.example.com/?some+query', text='some response')
+        basic_apiquery.send_request()
+
+        assert basic_apiquery.response.text == 'some response'
