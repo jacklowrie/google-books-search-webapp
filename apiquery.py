@@ -5,9 +5,11 @@ class APIQuery:
     parameters = {'q':''}
     response = None  #response from api, populated by parse_results()
     results = None
-    def __init__(self, base_url, search):
-        self.base_url = base_url
-        self.parameters['q'] = search
+    def __init__(self, query):
+        self.parameters['q'] = query
+
+    def set_base_url(self, url):
+        self.base_url = url
 
     def get_base_url(self):
         return self.base_url

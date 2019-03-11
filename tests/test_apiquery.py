@@ -9,13 +9,14 @@ from apiquery import APIQuery
 def basic_apiquery():
     pytest.test_url = 'https://www.example.com/'
     pytest.test_query = 'some query'
-    new_apiquery = APIQuery(pytest.test_url, pytest.test_query)
+    new_apiquery = APIQuery(pytest.test_query)
+    new_apiquery.set_base_url(pytest.test_url)
     yield new_apiquery
     del new_apiquery, pytest.test_url, pytest.test_query
 
 class TestCreateAPIQueryObjects(object):
 
-    def test_can_create_apiquery_with_base_url(self, basic_apiquery):
+    def test_can_set_apiquery_base_url(self, basic_apiquery):
         assert basic_apiquery.base_url == pytest.test_url
 
     def test_can_create_apiquery_with_params(self, basic_apiquery):
