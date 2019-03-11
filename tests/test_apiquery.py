@@ -1,6 +1,7 @@
 import pytest
 import requests
 import requests_mock
+import json
 
 from apiquery import APIQuery
 
@@ -11,7 +12,6 @@ def basic_apiquery():
     new_apiquery = APIQuery(pytest.test_url, pytest.test_query)
     yield new_apiquery
     del new_apiquery, pytest.test_url, pytest.test_query
-
 
 class TestCreateAPIQueryObjects(object):
 
@@ -32,3 +32,11 @@ class TestCreateAPIQueryObjects(object):
         basic_apiquery.send_request()
 
         assert basic_apiquery.response.text == 'some response'
+
+    def test_can_parse_results(self, requests_mock, basic_apiquery):
+        json_string = '{ "name":"John", "age":30, "city":"New York"}'
+
+        requests_mock.get('https://www.example.com/?some+query', text=json_string)
+        basic_apiquery.send_request()
+        basic_apiquery.parse_results()
+        assert basic_apiquery.results == json.loads(json_string)
