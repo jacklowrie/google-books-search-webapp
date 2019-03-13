@@ -3,7 +3,7 @@ import requests
 class APIQuery:
     base_url = ''
     parameters = {'q':''}
-    response = None  #response from api, populated by parse_results()
+    response = None  # response from api, populated by parse_results()
     results = None
     def __init__(self, query):
         self.parameters['q'] = query

@@ -28,7 +28,7 @@ class TestCreateAPIQueryObjects(object):
     def test_can_get_parameters(self, basic_apiquery):
         assert basic_apiquery.get_parameters() == {'q': pytest.test_query}
 
-    def test_can_construct_query_uri(self, requests_mock, basic_apiquery):
+    def test_can_send_api_request(self, requests_mock, basic_apiquery):
         requests_mock.get('https://www.example.com/?some+query', text='some response')
         basic_apiquery.send_request()
 
