@@ -10,7 +10,11 @@ class APIQuery:
 
     def query_api(self):
         self.send_request()
-        self.parse_results()
+
+        try:
+            self.parse_results()
+        except ValueError: #if the response isn't legitimate json
+            self.results = self.response.text
 
     def send_request(self):
         self.response = requests.get(self.get_base_url(), params=self.parameters)
@@ -36,4 +40,4 @@ class APIQuery:
         return self.parameters
 
     def get_results(self):
-        return results
+        return self.results

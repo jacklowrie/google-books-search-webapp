@@ -16,15 +16,15 @@ class TestGoogleBooksAPIQueryInheritance(object):
         assert new_search.base_url == 'https://www.googleapis.com/books/v1/volumes'
 
     def test_can_set_results_fields(self, new_search):
-        assert new_search.parameters == { 'q' : 'some search',
+        assert new_search.get_parameters() == { 'q' : 'some search',
                             'fields' : 'kind,totalItems,items(kind,volumeInfo(title,subtitle,authors,publisher,industryIdentifiers,imageLinks/thumbnail))'
                             }
 
-    def test_can_send_google_books_api_request(self, requests_mock, new_search):
+    def test_can_query_googlebooksapi(self, requests_mock, new_search):
         requests_mock.get('https://www.googleapis.com/books/v1/volumes',
                           text='ok'
                           )
-        new_search.send_request()
+        new_search.query_api()
         assert new_search.response.text == 'ok'
 
     def test_can_parse_results(self, requests_mock, new_search):
@@ -32,8 +32,7 @@ class TestGoogleBooksAPIQueryInheritance(object):
         requests_mock.get('https://www.googleapis.com/books/v1/volumes',
                           text=json_string
                           )
-        new_search.send_request()
-        new_search.parse_results()
+        new_search.query_api()
         assert new_search.results == json.loads(json_string)
 
 

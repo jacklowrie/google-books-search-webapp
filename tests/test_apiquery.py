@@ -60,3 +60,8 @@ class TestSendAPIQueries(object):
         apiquery_object.query_api()
 
         assert apiquery_object.results == json.loads(json_string)
+
+    def test_can_handle_nonjson_response(self, requests_mock, apiquery_object):
+        requests_mock.get('https://www.example.com/?some+query', text = 'ok')
+        apiquery_object.query_api()
+        assert apiquery_object.get_results() == 'ok'
