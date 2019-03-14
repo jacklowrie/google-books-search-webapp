@@ -8,20 +8,32 @@ class APIQuery:
     def __init__(self, query):
         self.parameters['q'] = query
 
-    def set_base_url(self, url):
-        self.base_url = url
-
-    def get_base_url(self):
-        return self.base_url
-
-    def get_parameters(self):
-        return self.parameters
+    def query_api(self):
+        self.send_request()
+        self.parse_results()
 
     def send_request(self):
         self.response = requests.get(self.get_base_url(), params=self.parameters)
 
     def parse_results(self):
         self.results = self.response.json()
+
+    def add_parameter(self, param, value):
+        self.parameters[param] = value
+
+# Setters and Getters
+
+    def set_base_url(self, url):
+        self.base_url = url
+
+    def get_base_url(self):
+        return self.base_url
+
+    def get_parameter(self, param):
+        return self.parameters[param]
+
+    def get_parameters(self):
+        return self.parameters
 
     def get_results(self):
         return results
