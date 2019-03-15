@@ -5,20 +5,21 @@ import json
 
 from googlebooksapiquery import GoogleBooksAPIQuery
 
-@pytest.fixture()
+@pytest.fixture
 def new_search():
-    new_search = GoogleBooksAPIQuery('some search')
-    yield new_search
-    del new_search
+    query = GoogleBooksAPIQuery('some search')
+    yield query
+    del query
+    print('teardown new_search')
 
 class TestGoogleBooksAPIQueryInheritance(object):
     def test_googlebooksapiquery_has_right_base_url(self, new_search):
         assert new_search.base_url == 'https://www.googleapis.com/books/v1/volumes'
 
     def test_can_set_results_fields(self, new_search):
-        assert new_search.get_parameters() == { 'q' : 'some search',
-                            'fields' : 'kind,totalItems,items(kind,volumeInfo(title,subtitle,authors,publisher,industryIdentifiers,imageLinks/thumbnail))'
-                            }
+        print(new_search.parameters)
+        print(new_search.get_parameters())
+        assert new_search.get_parameters() == { 'q' : 'some search', 'fields' : 'kind,totalItems,items(kind,volumeInfo(title,subtitle,authors,publisher,industryIdentifiers,imageLinks/thumbnail))'}
 
     def test_can_query_googlebooksapi(self, requests_mock, new_search):
         requests_mock.get('https://www.googleapis.com/books/v1/volumes',
@@ -42,11 +43,11 @@ def single_result(requests_mock):
     requests_mock.get('https://www.googleapis.com/books/v1/volumes',
                       text=test_results
                       )
-    search.send_request()
-    search.parse_results()
+    search.query_api()
     yield search
     del search
 
+#test_results is a reference of the api response for David's book on google books.
 test_results = json.dumps({ 'kind': 'books#volumes',
                     'totalItems': 1,
                     'items': [{ 'kind': 'books#volume',
@@ -64,9 +65,22 @@ test_results = json.dumps({ 'kind': 'books#volumes',
                                                 }
                             }]
 })
-class TestGoogleBooksAPIQueryMethods(object):
+
+class TestGoogleBooksAPIQueryUtilities(object):
     def test_get_results_count(self, single_result):
         assert single_result.get_results_count() == 1
 
-    def test_get_result_title(self, single_result_gb_search):
-        assert False
+    def test_can_get_result_title(self, single_result):
+        assert single_result.get_result_title(0) == 'Reckoning: The Quarter Boys'
+
+    def test_can_get_result_authors(self, single_result):
+        assert single_result.get_result_authors(0) == 'David Lennon'
+
+    def test_can_get_result_publisher(self, single_result):
+        assert single_result.get_result_publisher(0) == 'Createspace Indie Pub Platform'
+
+    def test_can_get_result_thumbnail_url(self, single_result):
+        assert single_result.get_result_thumbnail_url(0) == 'http://books.google.com/books/content?id=Osn8ugAACAAJ&printsec=frontcover&img=1&zoom=1&source=gbs_api'
+
+    def test_can_get_result_isbn(self, single_result):
+        assert single_result.get_result_isbn(0) == '9781475009217'

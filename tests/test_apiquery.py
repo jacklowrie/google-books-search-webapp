@@ -5,7 +5,7 @@ import json
 
 from apiquery import APIQuery
 
-@pytest.fixture()
+@pytest.fixture
 def apiquery_object():
     pytest.test_url = 'https://www.example.com/'
     pytest.test_query = 'some query'
