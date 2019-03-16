@@ -5,12 +5,7 @@ import json
 
 from googlebooksapiquery import GoogleBooksAPIQuery
 
-@pytest.fixture
-def new_search():
-    query = GoogleBooksAPIQuery('some search')
-    yield query
-    del query
-    print('teardown new_search')
+ 
 
 class TestGoogleBooksAPIQueryInheritance(object):
     def test_googlebooksapiquery_has_right_base_url(self, new_search):
