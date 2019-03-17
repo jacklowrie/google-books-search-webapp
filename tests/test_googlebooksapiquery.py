@@ -5,7 +5,11 @@ import json
 
 from googlebooksapiquery import GoogleBooksAPIQuery
 
- 
+@pytest.fixture
+def new_search():
+    query = GoogleBooksAPIQuery('some search')
+    yield query
+    del query
 
 class TestGoogleBooksAPIQueryInheritance(object):
     def test_googlebooksapiquery_has_right_base_url(self, new_search):
@@ -21,7 +25,7 @@ class TestGoogleBooksAPIQueryInheritance(object):
                           text='ok'
                           )
         new_search.query_api()
-        assert new_search.response.text == 'ok'
+        assert new_search.response_object.text == 'ok'
 
     def test_can_parse_results(self, requests_mock, new_search):
         json_string = '{ "name":"John", "age":30, "city":"New York"}'
@@ -29,7 +33,7 @@ class TestGoogleBooksAPIQueryInheritance(object):
                           text=json_string
                           )
         new_search.query_api()
-        assert new_search.results == json.loads(json_string)
+        assert new_search.response == json.loads(json_string)
 
 
 @pytest.fixture()
