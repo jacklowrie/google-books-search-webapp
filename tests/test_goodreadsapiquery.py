@@ -17,3 +17,10 @@ def test_googlebooksapiquery_has_right_base_url(goodreads_query):
 def test_can_set_results_fields(goodreads_query):
     assert goodreads_query.get_parameters() == { 'q' : 'some search',
                                             'key' : 'Hc3p3luBbcApaSFOTIgadQ'}
+
+def test_can_query_goodreads_api(requests_mock, goodreads_query):
+    requests_mock.get('https://www.goodreads.com/book/isbn_to_id',
+                      text='ok'
+                      )
+    goodreads_query.query_api()
+    assert goodreads_query.get_response() == 'ok'
