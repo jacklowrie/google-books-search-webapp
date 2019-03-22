@@ -1,12 +1,12 @@
 import requests
 
 class APIQuery:
-    base_url = ''
-    parameters = {'q':''}
-    response_object = None  # response from api, populated by parse_results()
-    response = None
+
     def __init__(self, query):
-        self.parameters['q'] = query
+        self.base_url = ''
+        self.parameters = {'q': query}
+        self.response_object = None  # response from api, populated by parse_results()
+        self.response = None
 
     def query_api(self):
         self.send_request()
