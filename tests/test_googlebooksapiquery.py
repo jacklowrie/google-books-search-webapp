@@ -83,3 +83,12 @@ class TestGoogleBooksAPIQueryUtilities(object):
 
     def test_can_get_result_isbn(self, single_result):
         assert single_result.get_result_isbn(0) == '9781475009217'
+
+    def test_can_compule_results(self, single_result):
+        single_result.compile_results()
+        assert single_result.get_results() == [(  'Reckoning: The Quarter Boys',
+                                            'David Lennon',
+                                            'Createspace Indie Pub Platform',
+                                            'http://books.google.com/books/content?id=Osn8ugAACAAJ&printsec=frontcover&img=1&zoom=1&source=gbs_api',
+                                            '9781475009217'
+                                        )]

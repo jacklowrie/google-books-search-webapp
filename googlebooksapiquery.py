@@ -6,7 +6,7 @@ class GoogleBooksAPIQuery(APIQuery):
         APIQuery.__init__(self, query)
         self.set_base_url('https://www.googleapis.com/books/v1/volumes')
         self.add_parameter('fields', 'kind,totalItems,items(kind,volumeInfo(title,subtitle,authors,publisher,industryIdentifiers,imageLinks/thumbnail))')
-
+        self.results = []
     def get_results_count(self):
         return self.response.get("totalItems")
 
@@ -44,3 +44,22 @@ class GoogleBooksAPIQuery(APIQuery):
                 if id['type'] == 'ISBN_13':
                     return id['identifier']
         return 0
+
+    def compile_results(self):
+
+        if self.get_results_count() == 0:
+            return 'no results'
+
+        books = len(self.response['items'])
+        for book in range(books):
+            result = (
+                        self.get_result_title(book),
+                        self.get_result_authors(book),
+                        self.get_result_publisher(book),
+                        self.get_result_thumbnail_url(book),
+                        self.get_result_isbn(book)
+                    )
+            self.results.append(result)
+
+    def get_results(self):
+        return self.results
