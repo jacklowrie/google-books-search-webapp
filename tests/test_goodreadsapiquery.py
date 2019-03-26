@@ -24,3 +24,10 @@ def test_can_query_goodreads_api(requests_mock, goodreads_query):
                       )
     goodreads_query.query_api()
     assert goodreads_query.get_response() == 'ok'
+
+def test_can_get_results(requests_mock, goodreads_query):
+    requests_mock.get('https://www.goodreads.com/book/isbn_to_id',
+                      text='14429101'
+                      )
+    goodreads_query.query_api()
+    assert goodreads_query.get_results() == 'https://www.goodreads.com/book/show/14429101'
