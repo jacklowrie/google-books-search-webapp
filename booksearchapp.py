@@ -21,8 +21,8 @@ class BookSearchApp(object):
             }
             self.results.append(result)
 
-    def get_goodreads_link(self, book):
-        query = GoodreadsAPIQuery(book[4])
+    def get_goodreads_link(self, isbn):
+        query = GoodreadsAPIQuery(isbn)
         query.query_api()
         return query.get_results()
 
