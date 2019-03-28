@@ -45,10 +45,10 @@ def test_can_add_goodreads_link(requests_mock):
                       )
     search = BookSearchApp('intitle:reckoning inauthor:david inauthor:lennon')
 
-    requests_mock.get('https://www.goodreads.com/book/isbn_to_id',
+    requests_mock.get('https://www.goodreads.com/book/isbn_to_id/9781475009217',
                       text='14429101'
                       )
-    link = search.get_goodreads_link(search.books[0])
+    link = search.get_goodreads_link(search.books[0][4])
     assert link == 'https://www.goodreads.com/book/show/14429101'
 
 
@@ -58,7 +58,7 @@ def test_can_create_result_list(requests_mock):
                           )
         search = BookSearchApp('intitle:reckoning inauthor:david inauthor:lennon')
 
-        requests_mock.get('https://www.goodreads.com/book/isbn_to_id',
+        requests_mock.get('https://www.goodreads.com/book/isbn_to_id/9781475009217',
                           text='14429101')
         search.create_result_list()
         assert search.get_results() == [{ 'title' : 'Reckoning: The Quarter Boys',
