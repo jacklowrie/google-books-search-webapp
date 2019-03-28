@@ -1,6 +1,6 @@
 from flask import Flask, render_template, request
 from form import SearchForm
-from booksearch import BookSearch
+from booksearchapp import BookSearchApp
 import logging
 import sys
 
@@ -20,9 +20,9 @@ def home():
         else:
             # Query google books
             search_query = form.search_query.data
-            book_search = BookSearch(search_query)
-            book_search.make_a_search()
-            results = book_search.get_search_results()
+            book_search = BookSearchApp(search_query)
+            book_search.create_result_list()
+            results = book_search.get_results()
             return render_template("index.html", form=form, results=results)
     elif request.method == 'GET': #if returning results
         return render_template("index.html", form=form, results=results)
