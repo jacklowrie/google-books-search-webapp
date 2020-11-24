@@ -4,17 +4,13 @@ import requests
 class BookSearch:
 
     books_api = 'https://www.googleapis.com/books/v1/volumes'
-    parameters = {  'q' : '',
-                    'fields' : 'kind,totalItems,items(kind,volumeInfo(title,subtitle,authors,publisher,industryIdentifiers,imageLinks/thumbnail))'
-                }
-    search = '' #user's search query, populated in __init__
-    results = '' #response from google books, populated by parse_results()
+    parameters = dict(q='',
+                      fields='kind,totalItems,items(kind,volumeInfo(title,subtitle,authors,publisher,industryIdentifiers,imageLinks/thumbnail))')
+    search = ''  # user's search query, populated in __init__
+    results = ''  # response from google books, populated by parse_results()
 
     def __init__(self, search=''):
         self.search = search
-
-
-
 
     def make_a_search(self):
         self.construct_request()
@@ -28,12 +24,9 @@ class BookSearch:
     def send_request(self):
         self.search = requests.get(self.books_api, params=self.parameters)
 
-    #store the results in a python dictionary
+    # store the results in a python dictionary
     def parse_results(self):
         self.results = self.search.json()
-
-
-
 
     def get_search_results(self):
         search_results = []
@@ -63,7 +56,7 @@ class BookSearch:
         return 'title: ' + title
 
     def get_result_authors(self, result):
-        authors = 'unkown'
+        authors = 'unknown'
         if 'authors' in self.results['items'][result]['volumeInfo']:
             authors = ', '.join(self.results['items'][result]['volumeInfo']['authors'])
         return 'authors: ' + authors

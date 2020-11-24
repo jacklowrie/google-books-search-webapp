@@ -14,7 +14,7 @@ app.logger.setLevel(logging.ERROR)
 def home():
     form = SearchForm()
     results = []
-    if request.method == 'POST': #if submitting the form
+    if request.method == 'POST':
         if form.validate() == False:
             return render_template("index.html", form=form)
         else:
@@ -24,8 +24,9 @@ def home():
             results = book_search.get_search_results()
             return render_template("index.html", form=form, results=results)
 
-    elif request.method == 'GET': #if returning results
+    elif request.method == 'GET':
         return render_template("index.html", form=form, results=results)
+
 
 if __name__ == '__main__':
     app.run()
