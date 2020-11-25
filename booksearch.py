@@ -50,25 +50,29 @@ class BookSearch:
         self.results = self.search.json()
 
     def get_search_results(self):
-        search_results = []
-
         if self.results['totalItems'] == 0:
             return 'no results'
+
+        search_results = {
+            'totalResults': self.results['totalItems'],
+            'maxDate': self.maxDate,
+            'minDate': self.minDate,
+            'mostProlific': self.mostProlific,
+            'items': []
+        }
+
         num_results = len(self.results['items'])
 
         # grab results by index from each of the resulting lists
         # send these back to the app for rendering front end
         for result in range(num_results):
             formatted_result = {
-                'totalResults': self.results['totalItems'],
                 'title': self.get_result_title(result),
                 'description': self.get_result_description(result),
                 'authors': self.get_result_authors(result),
-                'publisher': self.get_result_publisher(result),
                 'thumbnail': self.get_thumbnail_url(result),
-                'goodreads': self.make_goodreads_url(result)
             }
-            search_results.append(formatted_result)
+            search_results['items'].append(formatted_result)
         return search_results
 
     # do a bit of processing on each json object
