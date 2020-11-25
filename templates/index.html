@@ -4,17 +4,14 @@
 
 <form method="POST" action="/" class="pure-form">
   {{ form.hidden_tag() }}
-
   <div class="form-group">
     {% if form.search_query.errors %}
       {% for error in form.search_query.errors %}
         <p class="error-message">{{ error }}</p>
       {% endfor %}
     {% endif %}
-
     {{ form.search_query }}
   </div>
-
   {{ form.submit(class="btn-primary pure-button pure-button-primary") }}
 </form>
 
@@ -26,25 +23,30 @@
     <p class="no-results">Oops! your search didn't turn up any results!</p>
   </div>
   {% else %}
-    {% for result in results %}
+    <div class="metrics">
+        <h2>Search Metrics</h2>
+        <ul>
+            <li>Earliest Published Date: {{ results['minDate'] }}</li>
+            <li>Most Recent Published Date: {{ results['maxDate'] }}</li>
+            <li>Most Prolific Author: {{ results['mostProlific'] }}</li>
+            <li>Server Response Time: {{ results['responseTime'] }}</li>
+            <li>Total Results: {{ results['totalResults'] }}</li>
+        </ul>
+    </div>
+    {% for item in results['items'] %}
       <article class='pure-g'>
         <div class="pure-u-1-4">
-          {% if result['thumbnail'] =='' %}
-          <p class = thumbnail>this result has no thumbnail</p>
-          {% else %}
-          <img src="{{ result['thumbnail'] }}" style="margin:auto">
+        </div>
+          <button class="collapsible">{{ item['authors'] }} - {{ item['title'] }}</button>
+          {% if item['description'] != '' %}
+              <div class="description">
+                <div>
+                    <p>Description: {{ item['description'] }}</p>
+                </div>
+              </div>
           {% endif %}
-        </div>
-        <div class="pure-u-3-4">
-          <p class="title" target="_blank">{{ result['title'] }}</p>
-          <p class="authors">{{ result['authors'] }}</p>
-          <p class="publisher">{{ result['publisher'] }}</p>
-          <a href="{{ result['goodreads'] }}">View on GoodReads</a>
-        </div>
       </article>
     {% endfor %}
     {% endif %}
 </div>
-
-
 {% endblock %}
