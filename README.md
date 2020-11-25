@@ -21,13 +21,3 @@ The installation instructions above will allow you to run this app. I've include
 if __name__ == '__main__':
     app.run(debug=True)
 ```
-This will allow you to see errors in the browser if the app encounters one.
-
-## Next Steps
-### pagination
-I plan to add pagination -- currently, each request to the google books api only returns 10 results, and can only return up to 40 results. however, searches can have thousands of results. I plan to add forward and backwards buttons that allow new requests to be sent for the same query, that way the user can navigate through the entire list of results.
-### Design
-I'd also like to make the app more visually appealing. It's currently very barebones on html and css.
-
-### Code Refactor
-the BookSearch class is currently doing a lot. It would be better to have an APIQuery class, can be extended by separate classes for each api the app uses currently (google books and goodreads). This makes the code a little more future-proof.
