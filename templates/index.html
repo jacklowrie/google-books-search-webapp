@@ -36,10 +36,7 @@
           {% endif %}
         </div>
         <div class="pure-u-3-4">
-          <p class="title" target="_blank">{{ result['title'] }}</p>
-          <p class="authors">{{ result['authors'] }}</p>
-          <p class="publisher">{{ result['publisher'] }}</p>
-          <a href="{{ result['goodreads'] }}">View on GoodReads</a>
+          <p class="title" target="_blank">{{ result['authors'] }} - {{ result['title'] }}</p>
         </div>
       </article>
     {% endfor %}

@@ -1,13 +1,18 @@
 import requests
+import dateutil.parser as dparser
 
 
 class BookSearch:
 
     books_api = 'https://www.googleapis.com/books/v1/volumes'
-    parameters = dict(q='',
-                      fields='kind,totalItems,items(kind,volumeInfo(title,subtitle,authors,publisher,industryIdentifiers,imageLinks/thumbnail))')
+    parameters = dict(q='')
+    startIndex = 0
     search = ''  # user's search query, populated in __init__
     results = ''  # response from google books, populated by parse_results()
+    responseTime = 0
+    maxDate = None
+    minDate = None
+    mostProlific = ''
 
     def __init__(self, search=''):
         self.search = search
@@ -15,6 +20,7 @@ class BookSearch:
     def make_a_search(self):
         self.construct_request()
         self.send_request()
+        # self.send_all_requests()
         self.parse_results()
 
     # adds user's search phrase to parameters
@@ -23,6 +29,21 @@ class BookSearch:
 
     def send_request(self):
         self.search = requests.get(self.books_api, params=self.parameters)
+        self.responseTime = self.search.elapsed.total_seconds()
+
+    def send_all_requests(self):
+        self.parameters['startIndex'] = 0
+        self.parameters['maxResults'] = 40
+        self.search = requests.get(self.books_api, params=self.parameters)
+        if 'totalItems' in self.search.json() and self.search.json()['totalItems'] > 0:
+            self.results = self.search.json()
+            num_results = self.results['totalItems']
+            while self.parameters['startIndex'] < num_results:
+                self.parameters['startIndex'] += 40
+                next_results = requests.get(self.books_api, params=self.parameters).json()
+                if 'items' in next_results:
+                    for item in next_results['items']:
+                        self.results['items'].append(item)
 
     # store the results in a python dictionary
     def parse_results(self):
@@ -34,40 +55,68 @@ class BookSearch:
         if self.results['totalItems'] == 0:
             return 'no results'
         num_results = len(self.results['items'])
-        for result in range(num_results):
 
+        # grab results by index from each of the resulting lists
+        # send these back to the app for rendering front end
+        for result in range(num_results):
             formatted_result = {
+                'totalResults': self.results['totalItems'],
                 'title': self.get_result_title(result),
+                'description': self.get_result_description(result),
                 'authors': self.get_result_authors(result),
                 'publisher': self.get_result_publisher(result),
                 'thumbnail': self.get_thumbnail_url(result),
                 'goodreads': self.make_goodreads_url(result)
             }
             search_results.append(formatted_result)
-
         return search_results
 
+    # do a bit of processing on each json object
+    def analyze_results(self):
+        authors = {}
+        dates = []
+        for result in self.results['items']:
+            for author in result['volumeInfo']['authors']:
+                if author in authors:
+                    authors[author] += 1
+            if 'publishedDate' in result['volumeInfo']:
+                dates.append(dparser.parse(result['volumeInfo']['publishedDate']))
+
+        # sort dates to get the earliest and latest
+        dates = sorted(dates)
+        self.maxDate = dates[-1]
+        self.minDate = dates[0]
+
+        # having counted our authors in this traunch, sort and grab the highest count
+        self.mostProlific = sorted(authors, key=authors.get, reverse=True)[0]
+
+    # collate title and subtitles per volume
     def get_result_title(self, result):
         title = self.results['items'][result]['volumeInfo']['title']
-
         if 'subtitle' in self.results['items'][result]['volumeInfo']:
             title += ': ' + self.results['items'][result]['volumeInfo']['subtitle']
+        return title
 
-        return 'title: ' + title
+    # check for and return a description if present, message otherwise
+    def get_result_description(self, result):
+        desc = 'No description provided.'
+        if 'description' in self.results['items'][result]['volumeInfo']:
+            desc = self.results['items'][result]['volumeInfo']['description']
+        return desc
 
+    # join all authors with a comma per volume
     def get_result_authors(self, result):
         authors = 'unknown'
         if 'authors' in self.results['items'][result]['volumeInfo']:
             authors = ', '.join(self.results['items'][result]['volumeInfo']['authors'])
-        return 'authors: ' + authors
+        return authors
 
+    # null check publisher, return if present
     def get_result_publisher(self, result):
         publisher = 'unknown'
-
         if 'publisher' in self.results['items'][result]['volumeInfo']:
             publisher = self.results['items'][result]['volumeInfo']['publisher']
-
-        return 'publisher: ' + publisher
+        return publisher
 
     def get_thumbnail_url(self, result):
         thumbnail = ''
@@ -75,6 +124,7 @@ class BookSearch:
             thumbnail = self.results['items'][result]['volumeInfo']['imageLinks']['thumbnail']
         return thumbnail
 
+    # unclear if relevant, consider removal
     def make_goodreads_url(self, result):
         goodreads = 'https://www.goodreads.com/book/show/'
         id = str(self.get_goodreads_id(result))
