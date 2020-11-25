@@ -22,7 +22,8 @@ class BookSearch:
         self.send_request()
         # self.send_all_requests()
         self.parse_results()
-        self.analyze_results()
+        if self.results['items']:
+            self.analyze_results()
 
     # adds user's search phrase to parameters
     def construct_request(self):

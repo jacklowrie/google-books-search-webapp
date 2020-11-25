@@ -15,7 +15,6 @@
   {{ form.submit(class="btn-primary pure-button pure-button-primary") }}
 </form>
 
-
 <div class="results">
   {% if results == 'no results' %}
   <div class="pure-u-1-4"></div>
@@ -40,9 +39,7 @@
           <button class="collapsible">{{ item['authors'] }} - {{ item['title'] }}</button>
           {% if item['description'] != '' %}
               <div class="description">
-                <div>
-                    <p>Description: {{ item['description'] }}</p>
-                </div>
+                <p>Description: {{ item['description'] }}</p>
               </div>
           {% endif %}
       </article>
