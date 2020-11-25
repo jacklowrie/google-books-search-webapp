@@ -22,6 +22,7 @@ class BookSearch:
         self.send_request()
         # self.send_all_requests()
         self.parse_results()
+        self.analyze_results()
 
     # adds user's search phrase to parameters
     def construct_request(self):
@@ -58,6 +59,7 @@ class BookSearch:
             'maxDate': self.maxDate,
             'minDate': self.minDate,
             'mostProlific': self.mostProlific,
+            'responseTime': self.responseTime,
             'items': []
         }
 
@@ -80,9 +82,12 @@ class BookSearch:
         authors = {}
         dates = []
         for result in self.results['items']:
-            for author in result['volumeInfo']['authors']:
-                if author in authors:
-                    authors[author] += 1
+            if 'authors' in result['volumeInfo']:
+                for author in result['volumeInfo']['authors']:
+                    if author in authors:
+                        authors[author] += 1
+                    else:
+                        authors[author] = 1
             if 'publishedDate' in result['volumeInfo']:
                 dates.append(dparser.parse(result['volumeInfo']['publishedDate']))
 
@@ -92,7 +97,11 @@ class BookSearch:
         self.minDate = dates[0]
 
         # having counted our authors in this traunch, sort and grab the highest count
-        self.mostProlific = sorted(authors, key=authors.get, reverse=True)[0]
+        if authors:
+            sorted_authors = sorted(authors, key=authors.get, reverse=True)
+            # self.mostProlific = sorted(authors, key=authors.get, reverse=True)[0]
+            plurality = " work." if authors.get(sorted_authors[0]) is 1 else " works."
+            self.mostProlific = sorted_authors[0] + " who has contributed to " + str(authors.get(sorted_authors[0])) + plurality
 
     # collate title and subtitles per volume
     def get_result_title(self, result):

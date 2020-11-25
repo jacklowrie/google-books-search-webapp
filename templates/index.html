@@ -26,6 +26,16 @@
     <p class="no-results">Oops! your search didn't turn up any results!</p>
   </div>
   {% else %}
+    <div class="metrics">
+        <h2>Search Metrics</h2>
+        <ul>
+            <li>Earliest Published Date: {{ results['minDate'] }}</li>
+            <li>Most Recent Published Date: {{ results['maxDate'] }}</li>
+            <li>Most Prolific Author: {{ results['mostProlific'] }}</li>
+            <li>Server Response Time: {{ results['responseTime'] }}</li>
+            <li>Total Results: {{ results['totalResults'] }}</li>
+        </ul>
+    </div>
     {% for item in results['items'] %}
       <article class='pure-g'>
         <div class="pure-u-1-4">
