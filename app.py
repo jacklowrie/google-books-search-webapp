@@ -5,16 +5,17 @@ import logging
 import sys
 
 app = Flask(__name__)
-app.secret_key = 'QVwI5uhPuU'
-
+# app.secret_key = 'QVwI5uhPuU'
+app.secret_key = 'AIzaSyBKFOVhps_PAJaA5mq9n440F_ILdj8BCMM'
 app.logger.addHandler(logging.StreamHandler(sys.stdout))
 app.logger.setLevel(logging.ERROR)
 
-@app.route('/', methods=["GET", "POST"])
+
+@app.route("/", methods=["GET", "POST"])
 def home():
     form = SearchForm()
     results = []
-    if request.method == 'POST': #if submitting the form
+    if request.method == 'POST':
         if form.validate() == False:
             return render_template("index.html", form=form)
         else:
@@ -24,8 +25,9 @@ def home():
             results = book_search.get_search_results()
             return render_template("index.html", form=form, results=results)
 
-    elif request.method == 'GET': #if returning results
+    elif request.method == 'GET':
         return render_template("index.html", form=form, results=results)
+
 
 if __name__ == '__main__':
     app.run()
